@@ -1,0 +1,851 @@
+├── project/
+│   ├── structure.txt
+│       └── Contents of structure.txt:
+│   ├── __init__.py
+│       └── Contents of __init__.py:
+│           import os  # Import the os module
+│           from pathlib import Path
+│           from typing import List, Optional
+│           
+│           from .src.file_operations import FileOperations
+│           from .src.package_manager import PackageManager
+│           from .src.node import Node
+│           from .src.logger import setup_logger
+│           
+│           # Set up the logger for the package
+│           logger = setup_logger('MyLogger', 'my_log.log')
+│           
+│           __all__ = [
+│               "FileOperations",
+│               "PackageManager",
+│               "Node",
+│               "create_structure_from_file",
+│               "install_package",
+│               "output_directory_structure",
+│               "recreate_structure_from_file",
+│               "logger"
+│           ]
+│           
+│           def create_structure_from_file(structure_file: str, project_root: Optional[str] = None, logger=logger) -> None:
+│               """
+│               Create a project structure from a given structure file.
+│           
+│               :param structure_file: Path to the file containing the project structure.
+│               :param project_root: Root directory where the project structure will be created.
+│                                    Defaults to the current working directory if not provided.
+│               :param logger: Logger instance for logging information.
+│               """
+│               if project_root is None:
+│                   project_root = os.getcwd()
+│           
+│               file_ops = FileOperations(project_root, logger)
+│               file_ops.create_structure_from_file(structure_file)
+│           
+│           def install_package(package_name: str, package_manager_type: str, logger=logger) -> None:
+│               """
+│               Install a package using the specified package manager.
+│               
+│               :param package_name: Name of the package to install.
+│               :param package_manager_type: Type of package manager (e.g., 'pip', 'npm').
+│               :param logger: Logger instance for logging information.
+│               """
+│               package_manager = PackageManager(logger)
+│               package_manager.install_package(package_name, package_manager_type)
+│           
+│           def output_directory_structure(root_directory: str, output_file: str = None, include_contents: bool = False, logger=logger) -> None:
+│               """
+│               Outputs the directory structure of the specified root directory to a text file,
+│               with an option to include file contents.
+│               
+│               :param root_directory: The root directory to analyze.
+│               :param output_file: The output text file to write the structure.
+│                                   Defaults to "directory_structure.txt" in the current directory if not provided.
+│               :param include_contents: Whether to include file contents in the output. Defaults to False.
+│               :param logger: Logger instance for logging information.
+│               """
+│               file_ops = FileOperations(root_directory, logger)
+│               file_ops.output_directory_structure(root_directory, output_file, include_contents)
+│           def recreate_structure_from_file(root_directory: str, structure_file: str, files: str, logger=logger) -> None:
+│               """
+│               Recreate the directory structure from a given structure file.
+│               
+│               :param root_directory: The root directory where the structure will be recreated.
+│               :param structure_file: Path to the file containing the project structure to recreate.
+│               :param files: Path to the file containing the contents of the files to recreate.
+│               :param logger: Logger instance for logging information.
+│               """
+│               file_ops = FileOperations(root_directory, logger)
+│               file_ops.recreate_structure_from_file(structure_file=structure_file, files=files)
+│   ├── config/
+│   │   ├── config.yaml
+│   │       └── Contents of config.yaml:
+│   │   ├── settings.py
+│   │       └── Contents of settings.py:
+│   │   └── logging/
+│   │   │   ├── logger.py
+│   │   │       └── Contents of logger.py:
+│   │   │   ├── __init__.py
+│   │   │       └── Contents of __init__.py:
+│   └── docs/
+│   │   ├── README.md
+│   │       └── Contents of README.md:
+│   │           Here's a refined version of the README file for your File System Tool project:
+│   │           
+│   │           ---
+│   │           
+│   │           # File System Tool
+│   │           
+│   │           ## Overview
+│   │           
+│   │           The **File System Tool** is a Python application designed to create directory structures and files based on a predefined structure specified in a text file. It also manages the installation of packages via Python's `pip` and Node.js's `npm`, providing a convenient way to set up project environments quickly.
+│   │           
+│   │           ## Table of Contents
+│   │           
+│   │           - [Features](#features)
+│   │           - [Installation](#installation)
+│   │           - [Usage](#usage)
+│   │           - [Project Structure](#project-structure)
+│   │           - [Logging](#logging)
+│   │           - [Contributing](#contributing)
+│   │           - [License](#license)
+│   │           
+│   │           ## Features
+│   │           
+│   │           - Create directory structures and files based on a specified structure file.
+│   │           - Install packages using Python's `pip` and Node.js's `npm`.
+│   │           - Log operations and errors for troubleshooting.
+│   │           
+│   │           ## Installation
+│   │           
+│   │           ### Prerequisites
+│   │           
+│   │           - Python 3.6 or higher
+│   │           - Node.js and npm (for managing Node packages)
+│   │           - Basic understanding of how to run Python scripts and manage packages
+│   │           
+│   │           ### Step-by-Step Installation
+│   │           
+│   │           1. **Clone the repository:**
+│   │           
+│   │              ```bash
+│   │              git clone <repository_url>
+│   │              cd FileSystemTool
+│   │              ```
+│   │           
+│   │           2. **Create a virtual environment (optional but recommended):**
+│   │           
+│   │              ```bash
+│   │              python -m venv venv
+│   │              source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+│   │              ```
+│   │           
+│   │           3. **Install required Python packages:**
+│   │           
+│   │              Make sure you have `pip` installed. Then run:
+│   │           
+│   │              ```bash
+│   │              pip install -r requirements.txt
+│   │              ```
+│   │           
+│   │           4. **Install Node.js packages:**
+│   │           
+│   │              Ensure you have Node.js and npm installed. Then run:
+│   │           
+│   │              ```bash
+│   │              npm install <package_name>
+│   │              ```
+│   │           
+│   │           ## Usage
+│   │           
+│   │           1. **Run the main script:**
+│   │           
+│   │              To execute the application, use the following command:
+│   │           
+│   │              ```bash
+│   │              python src/main.py
+│   │              ```
+│   │           
+│   │           2. **Configuration:**
+│   │           
+│   │              - Update the `project_root` variable in `main.py` with the desired root directory where you want to create the structure.
+│   │              - Specify the path to the structure file in the `structure_file` variable.
+│   │           
+│   │           3. **Structure File Format:**
+│   │           
+│   │              The structure file should represent directories and files using indentation. For example:
+│   │           
+│   │              ```
+│   │              project/
+│   │              ├── src/
+│   │              │   ├── main.py
+│   │              │   ├── file_operations.py
+│   │              │   └── package_manager.py
+│   │              ├── tests/
+│   │              │   ├── test_file_operations.py
+│   │              │   └── test_package_manager.py
+│   │              └── docs/
+│   │                  └── README.md
+│   │              ```
+│   │           
+│   │           ## Project Structure
+│   │           
+│   │           ```
+│   │           FileSystemTool/
+│   │           |-- src/
+│   │           |   |-- main.py
+│   │           |   |-- file_operations.py
+│   │           |   |-- package_manager.py
+│   │           |   |-- logger.py
+│   │           |   |-- node.py
+│   │           |-- tests/
+│   │           |   |-- test_file_operations.py
+│   │           |   |-- test_package_manager.py
+│   │           |-- docs/
+│   │           |   |-- README.md
+│   │           |-- requirements.txt
+│   │           |-- .gitignore
+│   │           ```
+│   │           
+│   │           ## Logging
+│   │           
+│   │           The application utilizes a logging mechanism to record operations and errors. Logs are saved in `file_system_tool.log`. Ensure you have write permissions in the directory where the script is executed.
+│   │           
+│   │           ## Contributing
+│   │           
+│   │           Contributions are welcome! If you'd like to improve the File System Tool, feel free to submit a pull request or open an issue. Please ensure your code adheres to the project's coding standards.
+│   │           
+│   │           ## License
+│   │           
+│   │           This project is licensed under the MIT License. See the LICENSE file for details.
+│   │           
+│   │           ---
+│   │           
+│   │           This README provides a comprehensive overview of the project, making it easier for users to understand how to use and contribute to your File System Tool. Feel free to adjust any specific details to better fit your project.
+│   ├── src/
+│   │   ├── file_operations.py
+│   │       └── Contents of file_operations.py:
+│   │           import os
+│   │           import re
+│   │           import logging
+│   │           from pathlib import Path
+│   │           from typing import List, Optional
+│   │           from datetime import datetime
+│   │           from .node import Node
+│   │           from .settings import (
+│   │               IGNORED_FILE_EXTENSIONS,
+│   │               IGNORED_DIRECTORIES,
+│   │               DEFAULT_ENCODING,
+│   │               MAX_NAME_LENGTH,
+│   │               ALLOWED_CHARACTERS,
+│   │               REPLACE_CHARACTERS,
+│   │               REPLACEMENT_CHARACTER,
+│   │               ERROR_HANDLING,
+│   │               FILE_CONTENT_MARKERS,
+│   │               DIRECTORY_STRUCTURE_INDICATORS,
+│   │           )
+│   │           
+│   │           class FileOperations:
+│   │               def __init__(self, project_root: str, logger: logging.Logger):
+│   │                   """
+│   │                   Initialize the FileOperations class.
+│   │           
+│   │                   :param project_root: The root directory where operations will be performed.
+│   │                   :param logger: Logger instance for logging information.
+│   │                   """
+│   │                   self.project_root = Path(project_root).resolve()
+│   │                   self.logger = logger
+│   │           
+│   │                   # Load ignored files and directories from settings
+│   │                   self.ignored_extensions = IGNORED_FILE_EXTENSIONS
+│   │                   self.ignored_directories = IGNORED_DIRECTORIES
+│   │           
+│   │               def sanitize_name(self, name: str) -> str:
+│   │                   """
+│   │                   Sanitize a directory or file name by removing invalid characters and ensuring it is valid for the file system.
+│   │           
+│   │                   :param name: The name to sanitize.
+│   │                   :return: The sanitized name.
+│   │                   """
+│   │                   # Remove invalid characters
+│   │                   sanitized_name = re.sub(REPLACE_CHARACTERS, REPLACEMENT_CHARACTER, name)
+│   │           
+│   │                   # Replace multiple spaces or underscores with a single underscore
+│   │                   sanitized_name = re.sub(r'(?<!_)_+(?!_)', REPLACEMENT_CHARACTER, sanitized_name)
+│   │           
+│   │                   # Remove leading/trailing whitespace or underscores
+│   │                   sanitized_name = sanitized_name.strip(' _')
+│   │           
+│   │                   # Replace parentheses and curly braces with underscores
+│   │                   sanitized_name = re.sub(r'[(){}\[\]]', REPLACEMENT_CHARACTER, sanitized_name)
+│   │           
+│   │                   # If the name is empty after sanitization, use a default name
+│   │                   if not sanitized_name:
+│   │                       sanitized_name = "untitled"
+│   │                       self.logger.info(f"Name sanitized to default: {sanitized_name}")
+│   │           
+│   │                   # Ensure the name is not too long
+│   │                   if len(sanitized_name) > MAX_NAME_LENGTH:
+│   │                       sanitized_name = sanitized_name[:MAX_NAME_LENGTH]
+│   │                       self.logger.info(f"Name truncated to {MAX_NAME_LENGTH} characters: {sanitized_name}")
+│   │           
+│   │                   return sanitized_name
+│   │           
+│   │               def create_directory(self, dir_path: Path) -> None:
+│   │                   """
+│   │                   Create a directory at the specified path.
+│   │           
+│   │                   :param dir_path: Path to the directory to create.
+│   │                   """
+│   │                   try:
+│   │                       dir_path.mkdir(parents=True, exist_ok=True)
+│   │                       self.logger.info(f"Created directory: {dir_path}")
+│   │                       print(f"Created directory: {dir_path}")
+│   │                   except Exception as e:
+│   │                       self.handle_error(f"Error creating directory {dir_path}: {str(e)}")
+│   │           
+│   │               def create_file(self, file_path: Path, content: str = "") -> None:
+│   │                   """
+│   │                   Create a file at the specified path with optional content.
+│   │           
+│   │                   :param file_path: Path to the file to create.
+│   │                   :param content: Content to write to the file.
+│   │                   """
+│   │                   try:
+│   │                       # Ensure the parent directory exists
+│   │                       file_path.parent.mkdir(parents=True, exist_ok=True)
+│   │                       with file_path.open('w', encoding=DEFAULT_ENCODING) as f:
+│   │                           f.write(content)
+│   │                       self.logger.info(f"Created file: {file_path}")
+│   │                       print(f"Created file: {file_path}")
+│   │                   except Exception as e:
+│   │                       self.handle_error(f"Error creating file {file_path}: {str(e)}")
+│   │           
+│   │               def parse_structure(self, lines: List[str]) -> Node:
+│   │                   """
+│   │                   Parse a directory structure from a list of lines and create a tree of Nodes.
+│   │           
+│   │                   :param lines: List of lines representing the directory structure.
+│   │                   :return: The root node of the parsed structure.
+│   │                   """
+│   │                   root = Node('root', is_directory=True)
+│   │                   stack = [(-1, root)]  # Stack to track parent nodes and their indentation levels
+│   │                   current_file = None  # Track the current file being processed
+│   │                   file_content = []  # Store the content of the current file
+│   │                   current_path = self.project_root  # Track the current directory path
+│   │           
+│   │                   for line in lines:
+│   │                       # Remove special characters and trailing whitespace
+│   │                       stripped_line = re.sub(r'[│├└─]', '', line).rstrip()
+│   │           
+│   │                       # Skip empty lines
+│   │                       if not stripped_line:
+│   │                           continue
+│   │           
+│   │                       # Calculate indentation level
+│   │                       indent = len(stripped_line) - len(stripped_line.lstrip(' '))
+│   │                       name = stripped_line.strip()
+│   │           
+│   │                       # If we are currently processing a file's content
+│   │                       if current_file is not None:
+│   │                           # Check if the indentation level matches the file's content
+│   │                           if indent > current_file['indent']:
+│   │                               file_content.append(stripped_line)
+│   │                               continue
+│   │                           else:
+│   │                               # Write the content to the file
+│   │                               self.create_file(current_file['path'], '\n'.join(file_content))
+│   │                               current_file = None
+│   │                               file_content = []
+│   │           
+│   │                       # Skip ignored files and directories
+│   │                       if any(name.endswith(ext) for ext in self.ignored_extensions) or name in self.ignored_directories:
+│   │                           self.logger.info(f"Skipping ignored file/directory: {name}")
+│   │                           continue
+│   │           
+│   │                       # Sanitize the name
+│   │                       sanitized_name = self.sanitize_name(name)
+│   │                       if sanitized_name != name:
+│   │                           self.logger.info(f"Sanitized name: {name} -> {sanitized_name}")
+│   │           
+│   │                       # Determine if it's a directory or file
+│   │                       is_directory = name.endswith(DIRECTORY_STRUCTURE_INDICATORS['directory']) or (
+│   │                           DIRECTORY_STRUCTURE_INDICATORS['file'] not in name and not name.startswith('**')
+│   │                       )
+│   │           
+│   │                       # Pop the stack until we find the correct parent
+│   │                       while stack and indent <= stack[-1][0]:
+│   │                           stack.pop()
+│   │                           # Update the current path to the parent directory
+│   │                           current_path = current_path.parent
+│   │           
+│   │                       # Add the node to the parent
+│   │                       parent = stack[-1][1]
+│   │                       node = Node(sanitized_name, is_directory)
+│   │                       parent.add_child(node)
+│   │           
+│   │                       # If it's a directory, push it onto the stack and create the directory
+│   │                       if is_directory:
+│   │                           stack.append((indent, node))
+│   │                           dir_path = current_path / sanitized_name
+│   │                           self.create_directory(dir_path)
+│   │                           current_path = dir_path  # Update the current path to the new directory
+│   │                       else:
+│   │                           # If it's a file, start capturing its content
+│   │                           current_file = {
+│   │                               'path': current_path / sanitized_name,
+│   │                               'indent': indent
+│   │                           }
+│   │           
+│   │                       self.logger.info(f"Parsed {'directory' if is_directory else 'file'}: {sanitized_name} (indent: {indent})")
+│   │           
+│   │                   # Write the content of the last file (if any)
+│   │                   if current_file is not None:
+│   │                       self.create_file(current_file['path'], '\n'.join(file_content))
+│   │           
+│   │                   return root
+│   │           
+│   │               def create_structure_from_file(self, structure_file: str) -> None:
+│   │                   """
+│   │                   Create a directory structure from a file, skipping invalid or ignored files/directories.
+│   │           
+│   │                   :param structure_file: Path to the file containing the directory structure.
+│   │                   :raises FileNotFoundError: If the structure file does not exist.
+│   │                   :raises ValueError: If the structure file is empty or contains invalid data.
+│   │                   """
+│   │                   # Validate the structure file
+│   │                   if not os.path.exists(structure_file):
+│   │                       raise FileNotFoundError(f"Structure file not found: {structure_file}")
+│   │           
+│   │                   # Read the structure file
+│   │                   try:
+│   │                       with open(structure_file, 'r', encoding=DEFAULT_ENCODING) as file:
+│   │                           lines = file.readlines()
+│   │                           self.logger.info(f"Read structure file: {structure_file}")
+│   │                   except Exception as e:
+│   │                       self.handle_error(f"Error reading structure file {structure_file}: {str(e)}")
+│   │                       return
+│   │           
+│   │                   # Validate that the file is not empty
+│   │                   if not lines:
+│   │                       raise ValueError("Structure file is empty.")
+│   │           
+│   │                   # Parse the structure and create the directory tree
+│   │                   try:
+│   │                       root = self.parse_structure(lines)
+│   │                       self.logger.info(f"Parsed root node: {root.name}")
+│   │                       self._create_from_tree(root, self.project_root)
+│   │                       self.logger.info(f"Successfully created structure from file: {structure_file}")
+│   │                   except Exception as e:
+│   │                       self.handle_error(f"Error creating structure from file {structure_file}: {str(e)}")
+│   │           
+│   │               def _create_from_tree(self, node: Node, current_path: Path) -> None:
+│   │                   """
+│   │                   Recursively create directories and files from a tree structure.
+│   │           
+│   │                   :param node: Current node in the tree.
+│   │                   :param current_path: Current path in the file system.
+│   │                   """
+│   │                   for child in node.children:
+│   │                       child_path = current_path / child.name
+│   │           
+│   │                       # Skip ignored files and directories
+│   │                       if any(child.name.endswith(ext) for ext in self.ignored_extensions) or child.name in self.ignored_directories:
+│   │                           self.logger.info(f"Skipping ignored file/directory: {child.name}")
+│   │                           continue
+│   │           
+│   │                       if child.is_directory:
+│   │                           self.logger.info(f"Creating directory: {child_path}")
+│   │                           self.create_directory(child_path)
+│   │                           self._create_from_tree(child, child_path)
+│   │                       else:
+│   │                           self.logger.info(f"Creating file: {child_path}")
+│   │                           self.create_file(child_path)
+│   │           
+│   │               def output_directory_structure(self, root_directory: str, output_file: Optional[str] = None, include_contents: bool = False) -> None:
+│   │                   """
+│   │                   Output the directory structure of the specified root directory to a text file.
+│   │           
+│   │                   :param root_directory: The root directory to analyze.
+│   │                   :param output_file: The output text file to write the structure.
+│   │                   :param include_contents: Whether to include file contents in the output.
+│   │                   """
+│   │                   if output_file is None:
+│   │                       day=str(datetime.now().month)+str(datetime.now().day)+str(datetime.now().hour)+str(datetime.now().second)
+│   │                       output_file = os.path.join(os.getcwd(), ('directory_structure_'+day+'.txt'))
+│   │           
+│   │                   root_directory = Path(root_directory).resolve()
+│   │           
+│   │                   with open(output_file, 'w', encoding=DEFAULT_ENCODING) as f:
+│   │                       for dirpath, dirnames, filenames in os.walk(root_directory):
+│   │                           # Remove ignored directories from the list of directories to traverse
+│   │                           dirnames[:] = [d for d in dirnames if d not in self.ignored_directories]
+│   │           
+│   │                           level = dirpath.replace(str(root_directory), '').count(os.sep)
+│   │                           indent = '│   ' * level
+│   │           
+│   │                           # Write the directory name
+│   │                           f.write(f"{indent}{'├── ' if dirnames else '└── '}{os.path.basename(dirpath)}/\n")
+│   │           
+│   │                           # Write each file in the directory
+│   │                           for filename in filenames:
+│   │                               # Skip files with ignored extensions
+│   │                               if any(filename.endswith(ext) for ext in self.ignored_extensions):
+│   │                                   self.logger.info(f"Skipping file {filename} with ignored extension")
+│   │                                   continue
+│   │           
+│   │                               f.write(f"{indent}│   ├── {filename}\n")
+│   │           
+│   │                               if include_contents:
+│   │                                   # Construct the full file path
+│   │                                   file_path = os.path.join(dirpath, filename)
+│   │           
+│   │                                   try:
+│   │                                       # Read the file content
+│   │                                       with open(file_path, 'r', encoding=DEFAULT_ENCODING) as file_content:
+│   │                                           content = file_content.read()
+│   │           
+│   │                                       # Write the file name and content
+│   │                                       f.write(f"{indent}│       └── Contents of {filename}:\n")
+│   │                                       for line in content.splitlines():
+│   │                                           f.write(f"{indent}│           {line}\n")
+│   │                                   except Exception as e:
+│   │                                       # Log or print any errors encountered while reading a file
+│   │                                       self.handle_error(f"Error reading file {file_path}: {e}")
+│   │           
+│   │                   self.logger.info(f"Directory structure written to {output_file}")
+│   │           
+│   │               def handle_error(self, message: str) -> None:
+│   │                   """
+│   │                   Handle errors by logging and printing the error message.
+│   │           
+│   │                   :param message: The error message to log and print.
+│   │                   """
+│   │                   if ERROR_HANDLING['log_errors']:
+│   │                       self.logger.error(message)
+│   │                   if ERROR_HANDLING['print_errors']:
+│   │                       print(message)
+│   │   ├── logger.py
+│   │       └── Contents of logger.py:
+│   │           import logging
+│   │           from .settings import LOGGING
+│   │           
+│   │           def setup_logger(name: str, log_file: str) -> logging.Logger:
+│   │               """
+│   │               Set up a logger with the specified name and log file.
+│   │           
+│   │               :param name: Name of the logger.
+│   │               :param log_file: Path to the log file.
+│   │               :return: Configured logger instance.
+│   │               """
+│   │               logger = logging.getLogger(name)
+│   │               logger.setLevel(LOGGING['loggers'][name]['level'])
+│   │           
+│   │               # Create a file handler
+│   │               handler = logging.FileHandler(log_file, encoding='utf-8')
+│   │               handler.setFormatter(logging.Formatter(LOGGING['formatters']['default']['format']))
+│   │           
+│   │               # Add the handler to the logger
+│   │               logger.addHandler(handler)
+│   │           
+│   │               return logger
+│   │   ├── main.py
+│   │       └── Contents of main.py:
+│   │           import logging
+│   │           from .logger import setup_logger
+│   │           from .file_operations import FileOperations
+│   │           from .package_manager import PackageManager
+│   │           from .settings import DEFAULT_ROOT_DIRECTORY, DEFAULT_STRUCTURE_FILE, LOGGING
+│   │           
+│   │           def main(project_root: str = DEFAULT_ROOT_DIRECTORY, structure_file: str = DEFAULT_STRUCTURE_FILE, packages: dict = None):
+│   │               """
+│   │               Main function to set up the project structure and install packages.
+│   │           
+│   │               :param project_root: Root directory for the project.
+│   │               :param structure_file: Path to the structure file.
+│   │               :param packages: Dictionary of packages to install (e.g., {'package_name': 'pip'}).
+│   │               """
+│   │               # Set up the logger
+│   │               logger = setup_logger('FileSystemTool', LOGGING['handlers']['file']['filename'])
+│   │           
+│   │               # Instantiate FileOperations and create the project structure
+│   │               file_ops = FileOperations(project_root, logger)
+│   │               file_ops.create_structure_from_file(structure_file)
+│   │           
+│   │               # Install packages if provided
+│   │               if packages:
+│   │                   package_manager = PackageManager(logger)
+│   │                   for package, manager in packages.items():
+│   │                       package_manager.install_package(package, manager)
+│   │           
+│   │           if __name__ == "__main__":
+│   │               # Example usage
+│   │               packages_to_install = {
+│   │                   'requests': 'pip',
+│   │                   'express': 'npm',
+│   │               }
+│   │               main(packages=packages_to_install)
+│   │   ├── node.py
+│   │       └── Contents of node.py:
+│   │           from typing import List
+│   │           
+│   │           class Node:
+│   │               def __init__(self, name: str, is_directory: bool = False):
+│   │                   self.name = name
+│   │                   self.is_directory = is_directory
+│   │                   self.children: List['Node'] = []
+│   │           
+│   │               def add_child(self, child: 'Node'):
+│   │                   self.children.append(child)
+│   │           
+│   │           
+│   │   ├── package_manager.py
+│   │       └── Contents of package_manager.py:
+│   │           import subprocess
+│   │           import logging
+│   │           from .settings import IGNORED_PACKAGES, PACKAGE_MANAGERS
+│   │           
+│   │           class PackageManager:
+│   │               def __init__(self, logger: logging.Logger):
+│   │                   """
+│   │                   Initialize the PackageManager.
+│   │           
+│   │                   :param logger: Logger instance for logging information.
+│   │                   """
+│   │                   self.logger = logger
+│   │           
+│   │               def install_package(self, package_name: str, package_manager_type: str) -> None:
+│   │                   """
+│   │                   Install a package using the specified package manager.
+│   │           
+│   │                   :param package_name: Name of the package to install.
+│   │                   :param package_manager_type: Type of package manager (e.g., 'pip', 'npm').
+│   │                   """
+│   │                   # Skip ignored packages
+│   │                   if package_name in IGNORED_PACKAGES:
+│   │                       self.logger.info(f"Skipping ignored package: {package_name}")
+│   │                       return
+│   │           
+│   │                   # Get the package manager configuration
+│   │                   if package_manager_type not in PACKAGE_MANAGERS:
+│   │                       self.logger.error(f"Unsupported package manager: {package_manager_type}")
+│   │                       return
+│   │           
+│   │                   manager_config = PACKAGE_MANAGERS[package_manager_type]
+│   │                   command = [manager_config['command'], manager_config['install_command'], package_name]
+│   │           
+│   │                   try:
+│   │                       # Run the package installation command
+│   │                       subprocess.run(command, check=True)
+│   │                       self.logger.info(f"Successfully installed package: {package_name}")
+│   │                   except subprocess.CalledProcessError as e:
+│   │                       self.logger.error(f"Failed to install package {package_name}: {e}")
+│   │   ├── settings.py
+│   │       └── Contents of settings.py:
+│   │           import os
+│   │           from pathlib import Path
+│   │           
+│   │           # Base directory for the project
+│   │           BASE_DIR = Path(__file__).resolve().parent.parent
+│   │           
+│   │           # Logging configuration
+│   │           LOGGING = {
+│   │               'version': 1,
+│   │               'disable_existing_loggers': False,
+│   │               'handlers': {
+│   │                   'file': {
+│   │                       'level': 'INFO',
+│   │                       'class': 'logging.FileHandler',
+│   │                       'filename': os.path.join(BASE_DIR, 'logs', 'file_system_tool.log'),
+│   │                       'encoding': 'utf-8',
+│   │                       'formatter': 'default',
+│   │                   },
+│   │               },
+│   │               'formatters': {
+│   │                   'default': {
+│   │                       'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+│   │                   },
+│   │               },
+│   │               'loggers': {
+│   │                   'MyLogger': {  # Add this logger configuration
+│   │                       'handlers': ['file'],
+│   │                       'level': 'INFO',
+│   │                       'propagate': True,
+│   │                   },
+│   │                   'FileSystemTool': {  # Example of another logger
+│   │                       'handlers': ['file'],
+│   │                       'level': 'INFO',
+│   │                       'propagate': True,
+│   │                   },
+│   │               },
+│   │           }
+│   │           # List of file extensions to ignore
+│   │           IGNORED_FILE_EXTENSIONS = [
+│   │               '.pyc', '.log', '.tmp', '.lnk', '.inf', '.jpg', '.zip', '.webp', '.jpeg', '.bat',
+│   │               '.sqlite3', '.gitignore', 'package-lock.json', 'package.json', '.dockerignore',
+│   │               '404.html','500.html','css.css','js.js','Dockerfile','manage.py',
+│   │           ]
+│   │           
+│   │           # List of directory names to ignore
+│   │           IGNORED_DIRECTORIES = [
+│   │               'node_modules', '__pycache__', '.git','Dockerfile', '.vscode', 'venv', 'migrations', 'staticfiles','search','theme','media','ffmpeg-7.1-essentials_build',
+│   │           ]
+│   │           IGNORED_PATH=[]
+│   │           
+│   │           # List of packages to ignore during installation
+│   │           IGNORED_PACKAGES = [
+│   │               'package1', 'package2',
+│   │           ]
+│   │           
+│   │           # Default output file for directory structure
+│   │           DEFAULT_OUTPUT_FILE = os.path.join(BASE_DIR, 'directory_structure.txt')
+│   │           
+│   │           # Default structure file for creating directories
+│   │           DEFAULT_STRUCTURE_FILE = os.path.join(BASE_DIR, 'structure', 'directory_structure.txt')
+│   │           
+│   │           # Default file for recreating file contents
+│   │           DEFAULT_CONTENTS_FILE = os.path.join(BASE_DIR, 'structure', 'file_contents_output.txt')
+│   │           
+│   │           # Package manager settings
+│   │           PACKAGE_MANAGERS = {
+│   │               'pip': {
+│   │                   'command': 'pip',
+│   │                   'install_command': 'install',
+│   │               },
+│   │               'npm': {
+│   │                   'command': 'npm',
+│   │                   'install_command': 'install',
+│   │               },
+│   │           }
+│   │           
+│   │           # Maximum length for file/directory names (Windows has a limit of 255 characters)
+│   │           MAX_NAME_LENGTH = 255
+│   │           
+│   │           # Default encoding for file operations
+│   │           DEFAULT_ENCODING = 'utf-8'
+│   │           
+│   │           # Default root directory for project operations
+│   │           DEFAULT_ROOT_DIRECTORY = os.path.join(BASE_DIR, 'project_root')
+│   │           
+│   │           # Settings for file content parsing
+│   │           FILE_CONTENT_MARKERS = {
+│   │               'start': '<startwolf>',
+│   │               'end': '<endwolf>',
+│   │           }
+│   │           
+│   │           # Settings for directory structure parsing
+│   │           DIRECTORY_STRUCTURE_INDICATORS = {
+│   │               'directory': '/',
+│   │               'file': '.',
+│   │           }
+│   │           
+│   │           # List of allowed characters in file/directory names
+│   │           ALLOWED_CHARACTERS = r'[a-zA-Z0-9_\-\.]'
+│   │           
+│   │           # List of characters to replace in file/directory names
+│   │           REPLACE_CHARACTERS = r'[\\/:*?"<>|#]'
+│   │           
+│   │           # Default replacement character for invalid characters in file/directory names
+│   │           REPLACEMENT_CHARACTER = '_'
+│   │           
+│   │           # Settings for error handling
+│   │           ERROR_HANDLING = {
+│   │               'log_errors': True,
+│   │               'print_errors': True,
+│   │           }
+│   │           
+│   │           # Settings for testing
+│   │           TEST_SETTINGS = {
+│   │               'test_root_directory': os.path.join(BASE_DIR, 'tests', 'test_root'),
+│   │               'test_structure_file': os.path.join(BASE_DIR, 'tests', 'test_structure.txt'),
+│   │               'test_contents_file': os.path.join(BASE_DIR, 'tests', 'test_contents.txt'),
+│   │           }
+│   │   ├── __init__.py
+│   │       └── Contents of __init__.py:
+│   │   └── utils/
+│   │   │   ├── data_processor.py
+│   │   │       └── Contents of data_processor.py:
+│   │   │   ├── file_handler.py
+│   │   │       └── Contents of file_handler.py:
+│   │   │   ├── __init__.py
+│   │   │       └── Contents of __init__.py:
+│   ├── tests/
+│   │   ├── test_file_operations.py
+│   │       └── Contents of test_file_operations.py:
+│   │           import unittest
+│   │           from pathlib import Path
+│   │           from project.src.file_operations import FileOperations
+│   │           from project.src.settings import IGNORED_FILE_EXTENSIONS, IGNORED_DIRECTORIES
+│   │           import logging
+│   │           
+│   │           class TestFileOperations(unittest.TestCase):
+│   │               def setUp(self):
+│   │                   """Set up the test environment."""
+│   │                   self.project_root = Path("test_project")
+│   │                   self.logger = logging.getLogger('TestLogger')
+│   │                   self.file_ops = FileOperations(self.project_root, self.logger)
+│   │           
+│   │               def test_sanitize_name(self):
+│   │                   """Test the sanitize_name method."""
+│   │                   test_name = "invalid/name*file?.txt"
+│   │                   sanitized_name = self.file_ops.sanitize_name(test_name)
+│   │                   self.assertNotIn('/', sanitized_name)
+│   │                   self.assertNotIn('*', sanitized_name)
+│   │                   self.assertNotIn('?', sanitized_name)
+│   │           
+│   │               def test_create_directory(self):
+│   │                   """Test the create_directory method."""
+│   │                   test_dir = self.project_root / "test_dir"
+│   │                   self.file_ops.create_directory(test_dir)
+│   │                   self.assertTrue(test_dir.exists())
+│   │           
+│   │               def test_ignored_files_and_directories(self):
+│   │                   """Test that ignored files and directories are skipped."""
+│   │                   ignored_file = self.project_root / "ignored_file.pyc"
+│   │                   ignored_dir = self.project_root / "node_modules"
+│   │                   self.file_ops.create_file(ignored_file)
+│   │                   self.file_ops.create_directory(ignored_dir)
+│   │                   self.assertFalse(ignored_file.exists())
+│   │                   self.assertFalse(ignored_dir.exists())
+│   │           
+│   │           if __name__ == "__main__":
+│   │               unittest.main()
+│   │   ├── test_main.py
+│   │       └── Contents of test_main.py:
+│   │   ├── test_package_manager.py
+│   │       └── Contents of test_package_manager.py:
+│   │           import unittest
+│   │           from unittest.mock import patch
+│   │           from project.src.package_manager import PackageManager
+│   │           from project.src.settings import IGNORED_PACKAGES
+│   │           import logging
+│   │           
+│   │           class TestPackageManager(unittest.TestCase):
+│   │               def setUp(self):
+│   │                   """Set up the test environment."""
+│   │                   self.logger = logging.getLogger('TestLogger')
+│   │                   self.manager = PackageManager(self.logger)
+│   │           
+│   │               @patch('subprocess.run')
+│   │               def test_install_package_success(self, mock_run):
+│   │                   """Test successful package installation."""
+│   │                   self.manager.install_package('requests', 'pip')
+│   │                   mock_run.assert_called_once_with(['pip', 'install', 'requests'], check=True)
+│   │           
+│   │               @patch('subprocess.run')
+│   │               def test_install_ignored_package(self, mock_run):
+│   │                   """Test that ignored packages are skipped."""
+│   │                   ignored_package = IGNORED_PACKAGES[0]
+│   │                   self.manager.install_package(ignored_package, 'pip')
+│   │                   mock_run.assert_not_called()
+│   │           
+│   │           if __name__ == "__main__":
+│   │               unittest.main()
+│   │   ├── __init__.py
+│   │       └── Contents of __init__.py:
+│   │   └── test_utils/
+│   │   │   ├── test_data_processor.py
+│   │   │       └── Contents of test_data_processor.py:
+│   │   │   ├── test_file_handler.py
+│   │   │       └── Contents of test_file_handler.py:
+│   │   │   ├── __init__.py
+│   │   │       └── Contents of __init__.py:
