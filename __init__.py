@@ -1,73 +1,58 @@
-import os  # Import the os module
+# filesystemtool/__init__.py
+import os
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
+
+# Assuming logger setup is desired when the package is imported,
+# or it's handled per-operation.
+# from .src.logger import setup_logger
+# logger = setup_logger('FileSystemToolLogger', 'filesystemtool.log') # Or configure path better
 
 from .src.file_operations import FileOperations
 from .src.package_manager import PackageManager
 from .src.node import Node
-from .src.logger import setup_logger
+from .src.logger import setup_logger # Keep for explicit setup if needed
 
-# Set up the logger for the package
-logger = setup_logger('MyLogger', 'my_log.log')
+# Expose the main functions
+def create_structure_from_file(structure_file: str, project_root: Optional[str] = None, logger_instance=None) -> None:
+    if project_root is None:
+        project_root = os.getcwd()
+    if logger_instance is None:
+        # Default logger if none provided for this specific operation
+        logger_instance = setup_logger('FSOpsCreate', 'fsops_create.log')
+    file_ops = FileOperations(project_root, logger_instance)
+    file_ops.create_structure_from_file(structure_file)
+
+def output_directory_structure(root_directory: str, output_file: Optional[str] = None, include_contents: bool = False, logger_instance=None) -> None:
+    if logger_instance is None:
+        logger_instance = setup_logger('FSOpsOutput', 'fsops_output.log')
+    file_ops = FileOperations(root_directory, logger_instance) # root_directory for FileOps might be different here
+    file_ops.output_directory_structure(root_dir_to_scan=root_directory, output_file_path=output_file, include_contents=include_contents)
+
+def recreate_structure_from_file(root_directory: str, structure_definition_file: str, files_content_file: str, logger_instance=None) -> None:
+    if logger_instance is None:
+        logger_instance = setup_logger('FSOpsRecreate', 'fsops_recreate.log')
+    file_ops = FileOperations(root_directory, logger_instance)
+    file_ops.recreate_structure_from_file(structure_definition_file_path=structure_definition_file, files_content_file_path=files_content_file)
+
+def install_package(package_name: str, package_manager_type: str, logger_instance=None) -> None:
+    if logger_instance is None:
+        logger_instance = setup_logger('FSPkgInstall', 'fspkg_install.log')
+    package_manager = PackageManager(logger_instance)
+    package_manager.install_package(package_name, package_manager_type)
+
 
 __all__ = [
-    "FileOperations",
-    "PackageManager",
-    "Node",
+    "FileOperations", # If you want to expose the class itself
+    "PackageManager", # If you want to expose the class itself
+    "Node",           # If you want to expose the class itself
     "create_structure_from_file",
     "install_package",
     "output_directory_structure",
     "recreate_structure_from_file",
-    "logger"
+    "setup_logger" # Expose if users need to create custom loggers
 ]
 
-def create_structure_from_file(structure_file: str, project_root: Optional[str] = None, logger=logger) -> None:
-    """
-    Create a project structure from a given structure file.
-
-    :param structure_file: Path to the file containing the project structure.
-    :param project_root: Root directory where the project structure will be created.
-                         Defaults to the current working directory if not provided.
-    :param logger: Logger instance for logging information.
-    """
-    if project_root is None:
-        project_root = os.getcwd()
-
-    file_ops = FileOperations(project_root, logger)
-    file_ops.create_structure_from_file(structure_file)
-
-def install_package(package_name: str, package_manager_type: str, logger=logger) -> None:
-    """
-    Install a package using the specified package manager.
-    
-    :param package_name: Name of the package to install.
-    :param package_manager_type: Type of package manager (e.g., 'pip', 'npm').
-    :param logger: Logger instance for logging information.
-    """
-    package_manager = PackageManager(logger)
-    package_manager.install_package(package_name, package_manager_type)
-
-def output_directory_structure(root_directory: str, output_file: str = None, include_contents: bool = False, logger=logger) -> None:
-    """
-    Outputs the directory structure of the specified root directory to a text file,
-    with an option to include file contents.
-    
-    :param root_directory: The root directory to analyze.
-    :param output_file: The output text file to write the structure.
-                        Defaults to "directory_structure.txt" in the current directory if not provided.
-    :param include_contents: Whether to include file contents in the output. Defaults to False.
-    :param logger: Logger instance for logging information.
-    """
-    file_ops = FileOperations(root_directory, logger)
-    file_ops.output_directory_structure(root_directory, output_file, include_contents)
-def recreate_structure_from_file(root_directory: str, structure_file: str, files: str, logger=logger) -> None:
-    """
-    Recreate the directory structure from a given structure file.
-    
-    :param root_directory: The root directory where the structure will be recreated.
-    :param structure_file: Path to the file containing the project structure to recreate.
-    :param files: Path to the file containing the contents of the files to recreate.
-    :param logger: Logger instance for logging information.
-    """
-    file_ops = FileOperations(root_directory, logger)
-    file_ops.recreate_structure_from_file(structure_file=structure_file, files=files)
+# Consider where logger is initialized. If it's module-global,
+# its file path needs careful consideration (e.g., user's home dir, temp dir).
+# For a CLI tool, logging might be configured per command.

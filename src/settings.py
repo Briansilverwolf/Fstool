@@ -37,14 +37,14 @@ LOGGING = {
 }
 # List of file extensions to ignore
 IGNORED_FILE_EXTENSIONS = [
-    '.pyc', '.log', '.tmp', '.lnk', '.inf', '.jpg', '.zip', '.webp', '.jpeg', '.bat',
+    '.pyc', '.log', '.tmp', '.lnk', '.inf', '.jpg', '.zip', '.webp', '.jpeg', '.bat','.png','.drawio',
     '.sqlite3', '.gitignore', 'package-lock.json', 'package.json', '.dockerignore',
     '404.html','500.html','css.css','js.js','Dockerfile','manage.py',
 ]
 
 # List of directory names to ignore
 IGNORED_DIRECTORIES = [
-    'node_modules', '__pycache__', '.git','Dockerfile', '.vscode', 'venv', 'migrations', 'staticfiles','search','theme','media','ffmpeg-7.1-essentials_build',
+    'interface','node_modules', '__pycache__', '.git','Dockerfile', '.vscode', 'venv', 'migrations', 'staticfiles','search','theme','media','ffmpeg-7.1-essentials_build',
 ]
 IGNORED_PATH=[]
 
