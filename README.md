@@ -4,7 +4,6 @@
 
 A versatile Python tool for scaffolding, documenting, and recreating project structures. `FileSystemTool` simplifies project setup by generating directories and files from a simple text definition. It can also reverse the process, scanning an existing project into a structured text file, optionally including all file contents.
 
-Beyond project scaffolding, it includes a powerful **CI/CD Impact Analyzer** to intelligently determine which tests and build jobs need to run based on code changes, saving valuable CI minutes.
 
 ## Table of Contents
 
@@ -13,7 +12,6 @@ Beyond project scaffolding, it includes a powerful **CI/CD Impact Analyzer** to 
 -   [Usage](#usage)
     -   [As a Command-Line Tool (CLI)](#as-a-command-line-tool-cli)
     -   [As a Python Library](#as-a-python-library)
--   [Advanced Feature: CI/CD Impact Analysis](#advanced-feature-cicd-impact-analysis)
 -   [Structure File Format](#structure-file-format)
     -   [Basic Structure](#basic-structure)
     -   [Structure with Embedded Content](#structure-with-embedded-content)
@@ -156,39 +154,7 @@ print(f"Project created at {project_dir}")
 filesystemtool.install_package("express", "npm")
 ```
 
-## Advanced Feature: CI/CD Impact Analysis
 
-This powerful feature helps optimize your CI/CD pipelines by identifying the precise tests impacted by a code change. Instead of running your entire test suite on every commit, you can run only what's necessary.
-
-**How it works:**
-1.  It uses `git` to find which files have changed in a given commit range.
-2.  It parses all Python files in your project to build a dependency graph (i.e., which modules import which other modules).
-3.  It maps test files to the source code modules they import.
-4.  Given the changed files, it traverses the dependency graph to find all impacted modules and, subsequently, all relevant tests that should be run.
-5.  It also parses your `.github/workflows` files to suggest which CI job names (e.g., jobs containing "test") should be triggered.
-
-**Example Usage:**
-
-```python
-from pathlib import Path
-from filesystemtool.src.ci_cd_analyzer import CICDAnalyzer
-
-# 1. Point the analyzer to your project root
-project_root = Path(__file__).parent.resolve()
-analyzer = CICDAnalyzer(project_root=str(project_root))
-
-# 2. Get files changed in the last commit
-changed_files = analyzer.get_changed_files('HEAD~1..HEAD')
-print("Changed files:", changed_files)
-
-# 3. Find which test files are impacted by these changes
-impacted_tests = analyzer.get_impacted_tests(changed_files)
-print("Impacted tests to run:", impacted_tests)
-
-# 4. Get suggestions for which CI jobs to run
-job_suggestions = analyzer.suggest_jobs_to_run(changed_files)
-print("Suggested CI jobs:", job_suggestions)
-```
 
 ## Structure File Format
 
