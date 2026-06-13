@@ -9,7 +9,6 @@ from .. import (
     create_structure_from_file,
     output_directory_structure,
     recreate_structure_from_file,
-    install_package,
     setup_logger # To set up logger based on CLI args
 )
 from .settings import DEFAULT_ENCODING, LOGGING # For default log path
@@ -92,9 +91,6 @@ def main():
         elif args.command == "recreate":
             recreate_structure_from_file(args.root, args.structure_definition_file, args.files_content_file, logger_instance=logger)
             logger.info(f"Structure recreation command finished for {args.structure_definition_file}.")
-        elif args.command == "install":
-            install_package(args.package_name, args.manager_type, logger_instance=logger)
-            logger.info(f"Package install command finished for {args.package_name} ({args.manager_type}).")
         elif args.command == "output":
             root_dir_arg = args.root_directory
             # A potential (but perhaps overly magical) fix:
